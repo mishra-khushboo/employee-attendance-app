@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-attendance-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: employee-attendance-app
+  template:
+    metadata:
+      labels:
+        app: employee-attendance-app
+    spec:
+      containers:
+      - name: employee-attendance-app
+        image: YOUR_DOCKERHUB_USERNAME/employee-attendance-app:latest
+        ports:
+        - containerPort: 5000
