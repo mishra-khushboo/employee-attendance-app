@@ -14,25 +14,59 @@ pipeline {
         }
 
         stage('Run Tests') {
-            steps {
-                bat '''
-                echo Running Dummy Tests...
+    steps {
+        bat '''
+        
 
-                echo Test 1: Checking workspace
-                IF EXIST Jenkinsfile (echo PASS) ELSE (echo FAIL & exit /b 1)
+        echo Test 1: Jenkinsfile exists
+        IF EXIST Jenkinsfile (echo PASS) ELSE (echo FAIL & exit /b 1)
 
-                echo Test 2: Checking Docker installed
-                docker --version >nul 2>&1
-                IF %ERRORLEVEL%==0 (echo PASS) ELSE (echo FAIL & exit /b 1)
+        echo Test 2: Workspace accessible
+        cd >nul
+        IF %ERRORLEVEL%==0 (echo PASS) ELSE (echo FAIL & exit /b 1)
 
-                echo Test 3: Simple command test
-                echo Hello Jenkins > test_output.txt
-                IF EXIST test_output.txt (echo PASS) ELSE (echo FAIL & exit /b 1)
+        echo Test 3: Git available
+        git --version >nul 2>&1
+        IF %ERRORLEVEL%==0 (echo PASS) ELSE (echo FAIL & exit /b 1)
 
-                echo All Dummy Tests Passed!
-                '''
-            }
-        }
+        echo Test 4: Docker available
+        docker --version >nul 2>&1
+        IF %ERRORLEVEL%==0 (echo PASS) ELSE (echo FAIL & exit /b 1)
+
+        echo Test 5: File write test
+        echo Hello Jenkins > test1.txt
+        IF EXIST test1.txt (echo PASS) ELSE (echo FAIL & exit /b 1)
+
+        echo Test 6: File read test
+        type test1.txt >nul
+        IF %ERRORLEVEL%==0 (echo PASS) ELSE (echo FAIL & exit /b 1)
+
+        echo Test 7: Directory creation
+        mkdir test_folder
+        IF EXIST test_folder (echo PASS) ELSE (echo FAIL & exit /b 1)
+
+        echo Test 8: Environment variable check
+        IF DEFINED IMAGE_NAME (echo PASS) ELSE (echo FAIL & exit /b 1)
+
+        echo Test 9: Basic arithmetic
+        set /a num=2+2
+        IF %num%==4 (echo PASS) ELSE (echo FAIL & exit /b 1)
+
+        echo Test 10: Echo command
+        echo Jenkins CI/CD running...
+        IF %ERRORLEVEL%==0 (echo PASS) ELSE (echo FAIL & exit /b 1)
+
+        echo Test 11: Cleanup test files
+        del test1.txt >nul 2>&1
+        rmdir /s /q test_folder >nul 2>&1
+        echo PASS
+
+        echo ===============================
+        echo ALL 11 TESTS PASSED
+        echo ===============================
+        '''
+    }
+}
 
         stage('Build Docker Image') {
             steps {
