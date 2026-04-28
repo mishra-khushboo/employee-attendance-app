@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: employee-attendance-app
-        image: YOUR_DOCKERHUB_USERNAME/employee-attendance-app:latest
+        image: devops27093/employee-attendance-app:latest
         ports:
         - containerPort: 5000

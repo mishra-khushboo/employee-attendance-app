@@ -1,12 +1,12 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = "YOUR_DOCKERHUB_USERNAME/employee-attendance-app"
+        IMAGE_NAME = "devops27093/employee-attendance-app"
     }
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/YOUR_GITHUB_USERNAME/employee-attendance-app.git'
+                git branch: 'main', url: 'https://github.com/mishra-khushboo/employee-attendance-app.git'
             }
         }
         stage('Build Docker Image') {
